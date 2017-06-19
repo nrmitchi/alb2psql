@@ -96,7 +96,7 @@ func FetchDailyLogs (dir string, date time.Time) error {
 	// Load these into psql
 	files, _ = ioutil.ReadDir(dir)
 	for _, f := range files {
-		cmd = exec.Command("/usr/local/bin/psql", viper.GetString("dbName"), "-c", fmt.Sprintf("copy alb_logs from '%s/%s' DELIMITER ' ' QUOTE '\"' NULL '-' CSV;", dir, f.Name()))
+		cmd = exec.Command("/usr/local/bin/psql", viper.GetString("dbName"), "-c", fmt.Sprintf("copy alb_logs from '%s/%s' DELIMITER ' ' QUOTE '\"' CSV;", dir, f.Name()))
 
 		// Have this execute in our temporary dir
 		cmd.Dir = dir
