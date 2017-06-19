@@ -6,8 +6,21 @@ A simple utility to pull AWS Application Load Balancer (ALB) request logs, and l
 
 ## Workflow
 
- - Todo: Fill this in
+ - `alb2psql init`
+ - `alb2psql fetch <options>`
+ - `psql alb-logs`
 
 ## Installation
 
- - Todo: Fill this in
+**For macOS:**
+
+> Use [Homebrew](https://brew.sh/) package manager:
+>
+>      brew tap nrmitchi/alb2psql https://github.com/nrmitchi/alb2psqlgit
+>      brew install alb2psql
+
+
+**Other platforms:**
+
+> Clone this repo, and run `go build`. Move the binary to somewhere in your path.
+
