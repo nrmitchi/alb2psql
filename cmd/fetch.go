@@ -63,8 +63,8 @@ func FetchDailyLogs (dir string, date time.Time) error {
 
 	// var out bytes.Buffer
 	// var stderr bytes.Buffer
-  	cmd.Stdout = os.Stdout // &out
-  	cmd.Stderr = os.Stderr // &stderr
+	cmd.Stdout = os.Stdout // &out
+	cmd.Stderr = os.Stderr // &stderr
 
 	err := cmd.Run()
 	if err != nil {
@@ -72,8 +72,8 @@ func FetchDailyLogs (dir string, date time.Time) error {
 		return err
 	}
 
-  	// Unzip all of the files
-  	// Do it one-at-a-time because '*' gets stupidly escaped
+	// Unzip all of the files
+	// Do it one-at-a-time because '*' gets stupidly escaped
 	files, _ := ioutil.ReadDir(dir)
 	for _, f := range files {
 		// Now we want to unzip all of them
@@ -82,10 +82,9 @@ func FetchDailyLogs (dir string, date time.Time) error {
 		// Have this execute in our temporary dir
 		cmd.Dir = dir
 
-	  	cmd.Stdout = os.Stdout // &out
-	  	cmd.Stderr = os.Stderr // &stderr
+		cmd.Stdout = os.Stdout // &out
+		cmd.Stderr = os.Stderr // &stderr
 
-	  	log.Println("1")
 		err = cmd.Run()
 		if err != nil {
 			log.Println(err)
@@ -97,21 +96,20 @@ func FetchDailyLogs (dir string, date time.Time) error {
 	// Load these into psql
 	files, _ = ioutil.ReadDir(dir)
 	for _, f := range files {
-		cmd = exec.Command("/usr/local/bin/psql", viper.GetString("dbName"), "-c", fmt.Sprintf("copy alb_logs from '%s/%s' DELIMITER ' ' QUOTE '\"' CSV;", dir, f.Name()))
+		cmd = exec.Command("/usr/local/bin/psql", viper.GetString("dbName"), "-c", fmt.Sprintf("copy alb_logs from '%s/%s' DELIMITER ' ' QUOTE '\"' NULL '-' CSV;", dir, f.Name()))
 
 		// Have this execute in our temporary dir
 		cmd.Dir = dir
 
-	  	cmd.Stdout = os.Stdout // &out
-	  	cmd.Stderr = os.Stderr // &stdeff
+		cmd.Stdout = os.Stdout // &out
+		cmd.Stderr = os.Stderr // &stdeff
 
-	  	log.Println(f.Name())
+		log.Println(f.Name())
 		err := cmd.Run()
 		if err != nil {
 			log.Println(err.Error())
 			return err
 		}
-		fmt.Println(f.Name())
 	}
 
 	return  nil
