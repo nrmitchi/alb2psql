@@ -119,12 +119,7 @@ func FetchDailyLogs (dir string, date time.Time) error {
 var fetchCmd = &cobra.Command{
 	Use:   "fetch",
 	Short: "Pull ALB logs for the given date or range",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	//Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
 		// Todo: Validate that s3cmd exists: https://stackoverflow.com/questions/12518876/how-to-check-if-a-file-exists-in-go

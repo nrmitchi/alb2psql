@@ -22,8 +22,12 @@ package cmd
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"os/exec"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 /*
 
@@ -53,14 +57,54 @@ CREATE TABLE alb_logs (
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize the alb2psql database",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	//Long: ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("init called")
+		log.Println("Building Database")
+		c := exec.Command("/usr/local/bin/createdb", viper.GetString("dbName"))
+
+		c.Stdout = os.Stdout // &out
+		c.Stderr = os.Stderr // &stdeff
+
+		err := c.Run()
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+
+		c = exec.Command("/usr/local/bin/psql", viper.GetString("dbName"),  "-c", fmt.Sprintf(`
+		CREATE TABLE alb_logs (
+		    Http varchar(5),
+		    RequestTime TIMESTAMP WITH TIME ZONE,
+		    ELBName varchar(100),
+		    RequestIP_Port varchar(22),
+		    BackendIP_Port varchar(22),
+		    RequestProcessingTime FLOAT,
+		    BackendProcessingTime FLOAT,
+		    ClientResponseTime FLOAT,
+		    ELBResponseCode varchar(3),
+		    BackendResponseCode varchar(3),
+		    ReceivedBytes BIGINT,
+		    SentBytes BIGINT,
+		    HttpRequest varchar(5083),
+		    UserAgent varchar(500),
+		    SSL_Cipher varchar(40),
+		    SSL_Protocol varchar(40),
+		    TargetGroup varchar(100),
+		    RequestId varchar(40)
+		);
+		`))
+
+		c.Stdout = os.Stdout // &out
+		c.Stderr = os.Stderr // &stdeff
+
+		err = c.Run()
+		if err != nil {
+			log.Println(err.Error())
+			return
+		}
+		log.Println("Database created: alb-logs")
+		log.Println("Table created: alb_logs")
+		log.Println("  Warning: No index created")
 	},
 }
 
