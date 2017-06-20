@@ -39,7 +39,7 @@ const (
 
 func FormatS3Dir (date time.Time) string {
 	bucket := viper.GetString("bucket")
-	accountId := "584106525078"
+	accountId := viper.GetString("accountId")
 	region := "us-east-1"
 	year, month, day := date.Date()
 
@@ -141,6 +141,9 @@ var fetchCmd = &cobra.Command{
 
 		// Validate date/startDate/endDate conditions
 
+		if viper.GetString("accountId") == "" {
+			log.Fatal("`accountId` must be provided")
+		}
 		if viper.GetString("date") != "" {
 			date, err = time.Parse(DATE_FORMAT, viper.GetString("date"))
 
@@ -218,7 +221,10 @@ func init() {
 	fetchCmd.Flags().StringP("date", "d", "", "A single date to fetch")
 	fetchCmd.Flags().StringP("startDate", "s", "", "The start of a date range to fetch")
 	fetchCmd.Flags().StringP("endDate", "e", "", "The end of a date range to fetch")
+	fetchCmd.Flags().StringP("accountId", "", "", "The AWS account ID")
+
 	viper.BindPFlag("date", fetchCmd.Flags().Lookup("date"))
 	viper.BindPFlag("startDate", fetchCmd.Flags().Lookup("startDate"))
 	viper.BindPFlag("endDate", fetchCmd.Flags().Lookup("endDate"))
+	viper.BindPFlag("accountId", fetchCmd.Flags().Lookup("accountId"))
 }
