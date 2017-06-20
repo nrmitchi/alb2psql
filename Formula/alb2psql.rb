@@ -1,8 +1,8 @@
 class Alb2psql < Formula
   desc "Tool to fetch ALB request logs, and load into a local PostgreSQL instance"
   homepage "https://github.com/nrmitchi/alb2psql"
-  url "https://github.com/nrmitchi/alb2psql/archive/v0.0.1.tar.gz"
-  sha256 "2c7da89577182db466e60f8c3d6b2f35e48d2e876435f395c10e2e49facbef7f"
+  url "https://github.com/nrmitchi/alb2psql/archive/v0.0.2.tar.gz"
+  sha256 "728eea38bbed522a12013e9c9228223fcc296867e7107ace745f5bb4362cb111"
   head "https://github.com/nrmitchi/alb2psql.git", :branch => "master"
   bottle :unneeded
 
