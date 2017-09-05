@@ -221,7 +221,7 @@ func init() {
 	fetchCmd.Flags().StringP("date", "d", "", "A single date to fetch")
 	fetchCmd.Flags().StringP("startDate", "s", "", "The start of a date range to fetch")
 	fetchCmd.Flags().StringP("endDate", "e", "", "The end of a date range to fetch")
-	fetchCmd.Flags().StringP("accountId", "", "", "The AWS account ID")
+	fetchCmd.Flags().StringP("accountId", "a", "", "The AWS account ID")
 
 	viper.BindPFlag("date", fetchCmd.Flags().Lookup("date"))
 	viper.BindPFlag("startDate", fetchCmd.Flags().Lookup("startDate"))
